@@ -15,7 +15,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.json())
 app.use(morgan("dev"))
-app.use(cors())
+app.use(cors({
+    origin: 'https://cloud-pharmacy.vercel.app' // Replace with your actual frontend URL
+  }));
 conn();
 dotenv.config();
 //routes
