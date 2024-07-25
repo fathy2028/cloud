@@ -23,7 +23,16 @@ const ContactPage = () => {
             <BiMailSend /> : elsayednassef2021@gmail.com
           </p>
           <p className="mt-3">
+            <BiMailSend /> : fathynassef2028@gmail.com
+          </p>
+          <p className="mt-3">
             <BiPhoneCall /> : +201023243977
+          </p>
+          <p className="mt-3">
+            <BiPhoneCall /> : +201021773963
+          </p>
+          <p className="mt-3">
+            <BiPhoneCall /> : +201096180475
           </p>
         </div>
       </div>
