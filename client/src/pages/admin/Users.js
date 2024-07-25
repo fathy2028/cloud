@@ -18,6 +18,7 @@ const Users = () => {
     password: '',
     answer: ''
   });
+  const backendUrl = process.env.BACKEND_URL; // Use the environment variable
 
   useEffect(() => {
     if (auth?.token) {
@@ -27,7 +28,7 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const { data } = await axios.get('/api/v1/auth/users', {
+      const { data } = await axios.get(`${backendUrl}/api/v1/auth/users`, {
         headers: {
           Authorization: `${auth.token}`,
         },
@@ -44,7 +45,7 @@ const Users = () => {
 
   const deleteUser = async (userId) => {
     try {
-      const { data } = await axios.delete(`/api/v1/auth/users/${userId}`, {
+      const { data } = await axios.delete(`${backendUrl}/api/v1/auth/users/${userId}`, {
         headers: {
           Authorization: `${auth.token}`,
         },
@@ -89,7 +90,7 @@ const Users = () => {
 
   const handleUpdateUser = async () => {
     try {
-      const { data } = await axios.put(`/api/v1/auth/users/${selectedUser._id}`, userDetails, {
+      const { data } = await axios.put(`${backendUrl}/api/v1/auth/users/${selectedUser._id}`, userDetails, {
         headers: {
           Authorization: `${auth.token}`,
         },

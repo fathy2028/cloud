@@ -15,10 +15,11 @@ const Products = () => {
   const fileInputRef = useRef(null);
   const [form] = Form.useForm();
   const [searchTerm, setSearchTerm] = useState("");
+  const backendUrl = process.env.BACKEND_URL; // Use the environment variable
 
   const getAllProducts = async () => {
     try {
-      const { data } = await axios.get("/api/v1/product/getall-products");
+      const { data } = await axios.get(`${backendUrl}/api/v1/product/getall-products`);
       if (data?.success) {
         setProducts(data?.products);
       } else {
@@ -32,7 +33,7 @@ const Products = () => {
 
   const getAllCategories = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/getcategories");
+      const { data } = await axios.get(`${backendUrl}/api/v1/category/getcategories`);
       if (data?.success) {
         setCategories(data?.categories);
       } else {
@@ -46,7 +47,7 @@ const Products = () => {
 
   const deleteProduct = async (productId) => {
     try {
-      const { data } = await axios.delete(`/api/v1/product/delete-product/${productId}`);
+      const { data } = await axios.delete(`${backendUrl}/api/v1/product/delete-product/${productId}`);
       if (data?.success) {
         message.success("Product deleted successfully");
         getAllProducts(); // Refresh the product list after deletion
@@ -78,7 +79,7 @@ const Products = () => {
         formData.append('photo', file);
       }
 
-      const { data } = await axios.put(`/api/v1/product/update-product/${editingProduct._id}`, formData, {
+      const { data } = await axios.put(`${backendUrl}/api/v1/product/update-product/${editingProduct._id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -113,7 +114,7 @@ const Products = () => {
       getAllProducts(); // If the search input is empty, fetch all products
     } else {
       try {
-        const { data } = await axios.get(`/api/v1/product/search/${keyword}`);
+        const { data } = await axios.get(`${backendUrl}/api/v1/product/search/${keyword}`);
         setProducts(data);
       } catch (error) {
         console.log(error);
@@ -164,7 +165,7 @@ const Products = () => {
       title: 'Photo',
       dataIndex: 'photo',
       key: 'photo',
-      render: (photo) => <img src={`/uploads/${photo}`} alt={photo} width="50" height="50" />,
+      render: (photo) => <img src={`${backendUrl}/uploads/${photo}`} alt={photo} width="50" height="50" />,
     },
     {
       title: 'Actions',

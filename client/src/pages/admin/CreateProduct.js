@@ -5,10 +5,11 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Select } from 'antd';
+
 const { Option } = Select;
 
 const CreateProduct = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -18,10 +19,11 @@ const CreateProduct = () => {
   const [shipping, setShipping] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
+  const backendUrl = process.env.BACKEND_URL; // Use the environment variable
 
   const getallCategories = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/getcategories");
+      const { data } = await axios.get(`${backendUrl}/api/v1/category/getcategories`);
       if (data?.success) {
         setCategories(data?.categories);
       } else {
@@ -57,7 +59,7 @@ const CreateProduct = () => {
       formData.append("shipping", shipping);
       formData.append("photo", photo);
 
-      const { data } = await axios.post("/api/v1/product/create-product", formData, {
+      const { data } = await axios.post(`${backendUrl}/api/v1/product/create-product`, formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
@@ -73,7 +75,7 @@ const CreateProduct = () => {
         setShipping(false);
         setPhoto(null);
         setPhotoPreview(null);
-        navigate("/dashboard/admin/products")
+        navigate("/dashboard/admin/products");
       } else {
         toast.error(data?.message);
       }

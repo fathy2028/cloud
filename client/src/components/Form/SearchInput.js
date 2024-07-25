@@ -6,10 +6,11 @@ import { useNavigate } from 'react-router-dom';
 const SearchInput = () => {
     const [values, setValues] = useSearch();
     const navigate = useNavigate();
+    const backendUrl = process.env.BACKEND_URL; // Use the environment variable
 
     const fetchAllProducts = async () => {
         try {
-            const { data } = await axios.get(`/api/v1/product/getall-products`);
+            const { data } = await axios.get(`${backendUrl}/api/v1/product/getall-products`);
             setValues({ ...values, results: data.products });
         } catch (error) {
             console.log(error);
@@ -23,7 +24,7 @@ const SearchInput = () => {
             navigate("/search");
         } else {
             try {
-                const { data } = await axios.get(`/api/v1/product/search/${values.keyword}`);
+                const { data } = await axios.get(`${backendUrl}/api/v1/product/search/${values.keyword}`);
                 setValues({ ...values, results: data });
                 navigate("/search");
             } catch (error) {

@@ -11,13 +11,14 @@ const Category = () => {
     const [products, setProducts] = useState([]);
     const [category, setCategory] = useState({});
     const [loading, setLoading] = useState(false);
-    const [cart,setCart]=useCart();
+    const [cart, setCart] = useCart();
     const navigate = useNavigate();
+    const backendUrl = process.env.BACKEND_URL; // Use the environment variable
 
     const fetchProductsByCategory = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get(`/api/v1/product/productsbycategory/${id}`);
+            const { data } = await axios.get(`${backendUrl}/api/v1/product/productsbycategory/${id}`);
             setLoading(false);
             if (data?.success) {
                 setProducts(data.products);
@@ -49,14 +50,14 @@ const Category = () => {
                         {products.length > 0 ? (
                             products.map(product => (
                                 <div key={product._id} className='product-card'>
-                                    <img  src={`/uploads/${product.photo}`} alt={product.name} className='product-image' />
+                                    <img src={`${backendUrl}/uploads/${product.photo}`} alt={product.name} className='product-image' />
                                     <div className='product-info'>
                                         <h3 className='product-name'>{product.name}</h3>
                                         <p className='product-description'>{product.description.substring(0, 40)}</p>
                                         <p className='product-price'><b>EGP</b>{product.price}</p>
                                     </div>
                                     <div className='product-buttons'>
-                                    <button className='btn btn-primary' onClick={()=>{setCart([...cart,product]);toast.success("item added to cart successfully");localStorage.setItem("cart",JSON.stringify([...cart,product]))}}>Add to Cart</button>
+                                        <button className='btn btn-primary' onClick={() => { setCart([...cart, product]); toast.success("Item added to cart successfully"); localStorage.setItem("cart", JSON.stringify([...cart, product])) }}>Add to Cart</button>
                                         <button className='btn btn-secondary' onClick={() => navigate(`/product/${product._id}`)}>More Details</button>
                                     </div>
                                 </div>

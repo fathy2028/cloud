@@ -8,11 +8,12 @@ import toast from 'react-hot-toast';
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [auth] = useAuth();
+  const backendUrl = process.env.BACKEND_URL; // Use the environment variable
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const { data } = await axios.get('/api/v1/order/user-orders', {
+        const { data } = await axios.get(`${backendUrl}/api/v1/order/user-orders`, {
           headers: {
             Authorization: auth.token
           }
@@ -31,11 +32,11 @@ const Orders = () => {
     if (auth?.token) {
       fetchOrders();
     }
-  }, [auth]);
+  }, [auth, backendUrl]);
 
   const deleteOrder = async (orderId) => {
     try {
-      const { data } = await axios.delete(`/api/v1/order/user-order/${orderId}`, {
+      const { data } = await axios.delete(`${backendUrl}/api/v1/order/user-order/${orderId}`, {
         headers: {
           Authorization: auth.token
         }
@@ -79,7 +80,13 @@ const Orders = () => {
                     {order.products.map(product => (
                       <div key={product._id} className="row mb-2">
                         <div className="col-md-4">
-                          <img src={`/uploads/${product.photo}`} alt={product.name} width="100" height="100" style={{ objectFit: 'fill' }} />
+                          <img 
+                            src={`${backendUrl}/uploads/${product.photo}`} 
+                            alt={product.name} 
+                            width="100" 
+                            height="100" 
+                            style={{ objectFit: 'cover' }} // Use 'cover' for better fit
+                          />
                         </div>
                         <div className="col-md-8">
                           <h5>{product.name}</h5>

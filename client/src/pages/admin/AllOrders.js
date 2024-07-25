@@ -9,6 +9,7 @@ const AllOrders = () => {
     const [orders, setOrders] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [auth] = useAuth();
+    const backendUrl = process.env.BACKEND_URL; // Use the environment variable
 
     useEffect(() => {
         if (auth?.token) {
@@ -18,7 +19,7 @@ const AllOrders = () => {
 
     const fetchAllOrders = async () => {
         try {
-            const { data } = await axios.get('/api/v1/order/all-orders', {
+            const { data } = await axios.get(`${backendUrl}/api/v1/order/all-orders`, {
                 headers: {
                     Authorization: `${auth.token}`,
                 },
@@ -36,7 +37,7 @@ const AllOrders = () => {
     const updateOrderStatus = async (orderId, status) => {
         try {
             const { data } = await axios.put(
-                `/api/v1/order/update-status/${orderId}`,
+                `${backendUrl}/api/v1/order/update-status/${orderId}`,
                 { status },
                 {
                     headers: {
@@ -58,7 +59,7 @@ const AllOrders = () => {
     const deleteOrder = async (orderId) => {
         try {
             const { data } = await axios.delete(
-                `/api/v1/order/delete/${orderId}`,
+                `${backendUrl}/api/v1/order/delete/${orderId}`,
                 {
                     headers: {
                         Authorization: `${auth.token}`,
@@ -117,7 +118,7 @@ const AllOrders = () => {
                                             {order.products.map((product) => (
                                                 <div key={product._id} className="d-flex align-items-center me-2 mb-2">
                                                     <img
-                                                        src={`/uploads/${product.photo}`}
+                                                        src={`${backendUrl}/uploads/${product.photo}`} // Use the backend URL for the image source
                                                         alt={product.name}
                                                         width="50"
                                                         height="50"

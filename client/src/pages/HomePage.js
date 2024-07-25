@@ -41,10 +41,11 @@ const HomePage = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const backendUrl = process.env.BACKEND_URL; // Use the environment variable
 
   const getTotal = async () => {
     try {
-      const { data } = await axios.get("/api/v1/product/product-count");
+      const { data } = await axios.get(`${backendUrl}/api/v1/product/product-count`);
       if (data?.success) {
         setTotal(data.total);
       } else {
@@ -57,7 +58,7 @@ const HomePage = () => {
 
   const getAllCategories = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/getcategories");
+      const { data } = await axios.get(`${backendUrl}/api/v1/category/getcategories`);
       if (data?.success) {
         setCategories(data.categories);
       } else {
@@ -72,7 +73,7 @@ const HomePage = () => {
   const getAllProducts = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
+      const { data } = await axios.get(`${backendUrl}/api/v1/product/product-list/${page}`);
       setLoading(false);
       if (data?.success) {
         setProducts(data.products);
@@ -89,7 +90,7 @@ const HomePage = () => {
   const loadMore = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
+      const { data } = await axios.get(`${backendUrl}/api/v1/product/product-list/${page}`);
       setLoading(false);
       setProducts(prevProducts => [...prevProducts, ...data.products]);
     } catch (error) {
@@ -133,7 +134,7 @@ const HomePage = () => {
 
   const filterProducts = async () => {
     try {
-      const { data } = await axios.post("/api/v1/product/product-fillter", { checked, radio });
+      const { data } = await axios.post(`${backendUrl}/api/v1/product/product-fillter`, { checked, radio });
       if (data?.success) {
         setProducts(data.products);
       } else {
@@ -187,7 +188,7 @@ const HomePage = () => {
             <div className='product-container'>
               {products.length > 0 ? products.map(product => (
                 <div key={product._id} className='product-card'>
-                  <img style={{ objectfit:"cover" }} src={`/uploads/${product.photo}`} alt={product.name} className='product-image' />
+                  <img style={{ objectFit: "cover" }} src={`${backendUrl}/uploads/${product.photo}`} alt={product.name} className='product-image' />
                   <div className='product-info'>
                     <h3 className='product-name'>{product.name}</h3>
                     <p className='product-description'>{product.description.substring(0, 40)}</p>

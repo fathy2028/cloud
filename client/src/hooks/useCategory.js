@@ -3,10 +3,11 @@ import axios from "axios";
 
 export default function useCategory() {
     const [categories, setCategories] = useState([]);
+    const backendUrl = process.env.BACKEND_URL; // Use the environment variable
 
     const getCategories = async () => {
         try {
-            const { data } = await axios.get("/api/v1/category/getcategories"); // Await the axios call
+            const { data } = await axios.get(`${backendUrl}/api/v1/category/getcategories`); // Use the backend URL
             setCategories(data?.categories || []); // Handle the response correctly
         } catch (error) {
             console.log(error);
@@ -15,7 +16,7 @@ export default function useCategory() {
 
     useEffect(() => {
         getCategories();
-    }, []);
+    }, [backendUrl]); // Add backendUrl as a dependency
 
     return categories;
 }

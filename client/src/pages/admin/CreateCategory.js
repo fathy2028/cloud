@@ -4,69 +4,71 @@ import AdminMenu from '../../components/Layout/AdminMenu';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import CategoryForm from '../../components/Form/CategoryForm';
-import {Modal} from "antd"
+import { Modal } from 'antd';
 
 const CreateCategory = () => {
   const [categories, setCategories] = useState([]);
-  const [name,setName]=useState("")
-  const [visible,setVisible]=useState(false);
-  const [selected,setSelected]=useState(null)
-  const [updatedname,setUpdatedName]=useState("")
+  const [name, setName] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [updatedname, setUpdatedName] = useState("");
+  const backendUrl = process.env.BACKEND_URL; // Use the environment variable
 
-  const handlesubmit=async(e)=>{
+  const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      const {data}=await axios.post("/api/v1/category/create-category",{name})
-      if(data?.success){
-        toast.success(`${name} is created`)
+      const { data } = await axios.post(`${backendUrl}/api/v1/category/create-category`, { name });
+      if (data?.success) {
+        toast.success(`${name} is created`);
         getallCategories();
-        setName("")
-      }else{
-        toast.error(data.message)
+        setName("");
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
-      console.log(error)
-      toast.error("error in submitting the category")
+      console.log(error);
+      toast.error("Error in submitting the category");
     }
-  }
+  };
 
-  const handleupdate=async(e)=>{
-e.preventDefault();
+  const handleupdate = async (e) => {
+    e.preventDefault();
     try {
-      const {data}=await axios.put(`/api/v1/category/update-category/${selected._id}`,{name:updatedname})
-      if(data.success){
-        toast.success(`category name is ${updatedname} now`)
-        setSelected(null)
-        setUpdatedName("")
+      const { data } = await axios.put(`${backendUrl}/api/v1/category/update-category/${selected._id}`, { name: updatedname });
+      if (data.success) {
+        toast.success(`Category name is ${updatedname} now`);
+        setSelected(null);
+        setUpdatedName("");
         setVisible(false);
         getallCategories();
-      }else{
-        toast.error(data.message)
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
-      console.log(error)
-      toast.error("something went wrong")
+      console.log(error);
+      toast.error("Something went wrong");
     }
-  }
-  const handledelete=async(id)=>{
+  };
+
+  const handledelete = async (id) => {
     try {
-      const {data}=await axios.delete(`/api/v1/category/deletecategory/${id}`)
-      if(data.success){
-        toast.success(`deleted successfully`)
-        setSelected(null)
+      const { data } = await axios.delete(`${backendUrl}/api/v1/category/deletecategory/${id}`);
+      if (data.success) {
+        toast.success("Deleted successfully");
+        setSelected(null);
         getallCategories();
-      }else{
-        toast.error(data.message)
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
-      console.log(error)
-      toast.error("something went wrong")
+      console.log(error);
+      toast.error("Something went wrong");
     }
-  }
+  };
 
   const getallCategories = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/getcategories");
+      const { data } = await axios.get(`${backendUrl}/api/v1/category/getcategories`);
       if (data?.success) {
         setCategories(data?.categories);
       } else {
@@ -76,7 +78,7 @@ e.preventDefault();
       console.log(error);
       toast.error("Error while fetching categories");
     }
-  }
+  };
 
   useEffect(() => {
     getallCategories();
@@ -92,7 +94,7 @@ e.preventDefault();
           <div className='col-md-9'>
             <h1>Category Management</h1>
             <div className='p-3 w-50'>
-            <CategoryForm handlesubmit={handlesubmit} value={name} setValue={setName}/>
+              <CategoryForm handlesubmit={handlesubmit} value={name} setValue={setName} />
             </div>
             <div className='w-75'>
               <table className="table">
@@ -104,27 +106,25 @@ e.preventDefault();
                 </thead>
                 <tbody>
                   {categories?.map(c => (
-                    <>
-                    <tr>
-                      <td key={c._id}>{c.name}</td>
-                      <td >
-                        <button onClick={()=>{setVisible(true);setUpdatedName(c.name); setSelected(c)}} className='btn btn-primary ms-2'>Edit</button>
-                        <button onClick={()=>handledelete(c._id)}  className='btn btn-danger ms-2'>Delete</button>
+                    <tr key={c._id}>
+                      <td>{c.name}</td>
+                      <td>
+                        <button onClick={() => { setVisible(true); setUpdatedName(c.name); setSelected(c); }} className='btn btn-primary ms-2'>Edit</button>
+                        <button onClick={() => handledelete(c._id)} className='btn btn-danger ms-2'>Delete</button>
                       </td>
                     </tr>
-                    </>
                   ))}
                 </tbody>
               </table>
             </div>
-            <Modal onCancel={()=>setVisible(false)} footer={null} visible={visible}>
-            <CategoryForm value={updatedname} setValue={setUpdatedName} handlesubmit={handleupdate}/>
+            <Modal onCancel={() => setVisible(false)} footer={null} visible={visible}>
+              <CategoryForm value={updatedname} setValue={setUpdatedName} handlesubmit={handleupdate} />
             </Modal>
           </div>
         </div>
       </div>
     </Mylayout>
   );
-}
+};
 
 export default CreateCategory;

@@ -13,6 +13,7 @@ const ProfileAdmin = () => {
   const [address, setAddress] = useState("");
   const [answer, setAnswer] = useState("");
   const [auth, setAuth] = useAuth();
+  const backendUrl = process.env.BACKEND_URL; // Use the environment variable
 
   useEffect(() => {
     const { name, email, phone, address } = auth?.user;
@@ -25,7 +26,7 @@ const ProfileAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.put(`/api/v1/auth/updateuserprofile`, {
+      const { data } = await axios.put(`${backendUrl}/api/v1/auth/updateuserprofile`, {
         name,
         email,
         password,
