@@ -13,7 +13,7 @@ const Profile = () => {
   const [address, setAddress] = useState("");
   const [answer, setAnswer] = useState("");
   const [auth, setAuth] = useAuth();
-  const backendUrl = process.env.BACKEND_URL; // Use the environment variable
+  const backendUrl = process.env.BACKEND_URL || "https://cloud-test-api.vercel.app"
 
   useEffect(() => {
     const { name, email, phone, address } = auth?.user;

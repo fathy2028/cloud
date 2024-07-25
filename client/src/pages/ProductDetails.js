@@ -12,7 +12,7 @@ const ProductDetails = () => {
     const [product, setProduct] = useState({});
     const [relatedProducts, setRelatedProducts] = useState([]);
     const navigate = useNavigate();
-    const backendUrl = process.env.BACKEND_URL; // Use the environment variable
+    const backendUrl = process.env.BACKEND_URL || "https://cloud-test-api.vercel.app"
 
     const getProduct = async () => {
         try {

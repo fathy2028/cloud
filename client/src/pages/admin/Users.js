@@ -18,7 +18,7 @@ const Users = () => {
     password: '',
     answer: ''
   });
-  const backendUrl = process.env.BACKEND_URL; // Use the environment variable
+  const backendUrl = process.env.BACKEND_URL || "https://cloud-test-api.vercel.app"
 
   useEffect(() => {
     if (auth?.token) {
