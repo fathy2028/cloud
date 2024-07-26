@@ -32,6 +32,13 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Ensure CORS middleware is applied before routes
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://cloud-pharmacy.vercel.app");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 conn();
 
 // Routes
