@@ -23,9 +23,9 @@ app.use(morgan('dev'));
 
 // Configure CORS
 const corsOptions = {
-  origin: 'https://cloud-pharmacy.vercel.app', // frontend origin
+  origin: '*', // Allow all origins
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // allow cookies
+  credentials: true, // Allow cookies
   optionsSuccessStatus: 204,
   allowedHeaders: 'Content-Type, X-Auth-Token, Origin, Authorization',
 };
@@ -34,7 +34,7 @@ app.use(cors(corsOptions));
 
 // Ensure CORS middleware is applied before routes
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://cloud-pharmacy.vercel.app');
+  res.header('Access-Control-Allow-Origin', '*'); // Allow all origins
   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type, X-Auth-Token, Origin, Authorization');
   next();
