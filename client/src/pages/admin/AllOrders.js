@@ -9,7 +9,7 @@ const AllOrders = () => {
     const [orders, setOrders] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [auth] = useAuth();
-    const backendUrl = "https://cloud-test-api.vercel.app";
+    const backendUrl = "https://cloud-api-phi.vercel.app";
 
     useEffect(() => {
         if (auth?.token) {

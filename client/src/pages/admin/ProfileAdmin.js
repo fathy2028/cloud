@@ -13,7 +13,7 @@ const ProfileAdmin = () => {
   const [address, setAddress] = useState("");
   const [answer, setAnswer] = useState("");
   const [auth, setAuth] = useAuth();
-  const backendUrl = "https://cloud-test-api.vercel.app";
+  const backendUrl = "https://cloud-api-phi.vercel.app";
 
   useEffect(() => {
     const { name, email, phone, address } = auth?.user;

@@ -12,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [auth, setAuth] = useAuth();
-  const backendUrl = "https://cloud-test-api.vercel.app";
+  const backendUrl = "https://cloud-api-phi.vercel.app";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
