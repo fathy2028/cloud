@@ -16,7 +16,9 @@ const __dirname = path.dirname(__filename);
 app.use(express.json())
 app.use(morgan("dev"))
 app.use(cors({
-    origin: 'https://cloud-pharmacy.vercel.app'
+    origin: 'https://cloud-pharmacy.vercel.app',
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization'
 }));
 conn();
 dotenv.config();
