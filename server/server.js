@@ -28,7 +28,7 @@ app.use(morgan("dev"));
 
 // CORS Configuration
 app.use(cors({
-    origin: 'https://cloud-pharmacy.vercel.app/',
+    origin: 'https://cloud-pharmacy.vercel.app',
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization'
 }));
