@@ -9,7 +9,7 @@ const Search = () => {
     const [values] = useSearch();
     const navigate = useNavigate();
     const [cart, setCart] = useCart();
-    const backendUrl = process.env.BACKEND_URL || "https://cloud-test-api.vercel.app"
+    const backendUrl = "https://cloud-test-api.vercel.app";
 
     return (
         <Mylayout title={"Search - Cloud Pharmacy"}>

@@ -18,7 +18,7 @@ const Users = () => {
     password: '',
     answer: ''
   });
-  const backendUrl = process.env.BACKEND_URL || "https://cloud-test-api.vercel.app"
+  const backendUrl = "https://cloud-test-api.vercel.app";
 
   useEffect(() => {
     if (auth?.token) {
