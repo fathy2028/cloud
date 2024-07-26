@@ -23,7 +23,7 @@ app.use(morgan('dev'));
 
 // Configure CORS
 const corsOptions = {
-  origin: '*', // Allow all origins
+  origin: 'https://cloud-pharmacy.vercel.app', // Allow all origins
 };
 
 app.use(cors(corsOptions));
