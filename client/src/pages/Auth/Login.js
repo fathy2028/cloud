@@ -12,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [auth, setAuth] = useAuth();
-  const backendUrl = "https://cloud-pharma.vercel.app";
+  const backendUrl = process.env.BACKEND_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

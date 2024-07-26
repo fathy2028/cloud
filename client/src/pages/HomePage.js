@@ -41,7 +41,7 @@ const HomePage = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const backendUrl = "https://cloud-pharma.vercel.app";
+  const backendUrl = process.env.BACKEND_URL;
 
   const getTotal = async () => {
     try {

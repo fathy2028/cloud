@@ -12,7 +12,7 @@ const CreateCategory = () => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(null);
   const [updatedname, setUpdatedName] = useState("");
-  const backendUrl = "https://cloud-pharma.vercel.app";
+  const backendUrl = process.env.BACKEND_URL;
 
   const handlesubmit = async (e) => {
     e.preventDefault();

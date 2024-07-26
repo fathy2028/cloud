@@ -18,7 +18,7 @@ const Users = () => {
     password: '',
     answer: ''
   });
-  const backendUrl = "https://cloud-pharma.vercel.app";
+  const backendUrl = process.env.BACKEND_URL;
 
   useEffect(() => {
     if (auth?.token) {

@@ -15,7 +15,7 @@ const Products = () => {
   const fileInputRef = useRef(null);
   const [form] = Form.useForm();
   const [searchTerm, setSearchTerm] = useState("");
-  const backendUrl = "https://cloud-pharma.vercel.app";
+  const backendUrl = process.env.BACKEND_URL;
 
   const getAllProducts = async () => {
     try {

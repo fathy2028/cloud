@@ -7,7 +7,7 @@ import Spinner from "../Spinner";
 export default function AdminRoute() {
     const [Ok, setOK] = useState(false);
     const [auth, setAuth] = useAuth();
-    const backendUrl = "https://cloud-pharma.vercel.app";
+    const backendUrl = process.env.BACKEND_URL;
 
     useEffect(() => {
         const authCheck = async () => {
