@@ -35,7 +35,7 @@ app.use(cors({
 
 // Handle preflight requests
 app.options('*', cors({
-    origin: 'https://cloud-pharmacies.vercel.app',
+    origin: 'https://cloud-pharmacy.vercel.app',
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization'
 }));
