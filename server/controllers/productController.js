@@ -142,7 +142,7 @@ export const updateProductController = async (req, res) => {
         }
 
         try {
-            const  id  = req.params.id;
+            const id = req.params.id;
             const { name, description, price, category, quantity, shipping } = req.body;
             const photo = req.file;
 
@@ -231,68 +231,69 @@ export const deleteProductController = async (req, res) => {
         });
     }
 };
+
 export const productFillterController = async (req, res) => {
     try {
-      const { checked, radio } = req.body;
-      let args = {};
-      if (checked.length > 0) {
-        args.category = { $in: checked }; // Use $in to filter categories
-      }
-      if (radio.length) {
-        args.price = { $gte: radio[0], $lte: radio[1] }; // Set price range filter
-      }
-      const products = await productModel.find(args);
-      res.status(200).send({
-        success: true,
-        products
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(400).send({
-        success: false,
-        message: "Error while filtering",
-        error
-      });
-    }
-  };
-
-  export const productCountController=async(req,res)=>{
-    try {
-        const total=await productModel.find({}).estimatedDocumentCount();
+        const { checked, radio } = req.body;
+        let args = {};
+        if (checked.length > 0) {
+            args.category = { $in: checked }; // Use $in to filter categories
+        }
+        if (radio.length) {
+            args.price = { $gte: radio[0], $lte: radio[1] }; // Set price range filter
+        }
+        const products = await productModel.find(args);
         res.status(200).send({
-            success:true,
-            total
-        })
-    } catch (error) {
-        console.log(error)
-        res.status(500).send({
-            success:false,
-            message:"error in getting products",
-            error
-        })
-    }
-  }
-
-  export const productListController= async(req,res)=>{
-    try {
-        const perPage=8;
-        const page=req.params.page ? req.params.page : 1
-        const products=await productModel.find({}).skip((page-1)*perPage).limit(perPage).sort({createdAt:-1});
-        res.status(200).send({
-            success:true,
+            success: true,
             products
-        })
+        });
     } catch (error) {
-        console.log(error)
-        res.status(500).send({
-            success:false,
-            message:"faild to get product page list",
+        console.log(error);
+        res.status(400).send({
+            success: false,
+            message: "Error while filtering",
             error
-        })
+        });
     }
-  }
+};
 
-  export const searchProductController = async (req, res) => {
+export const productCountController = async (req, res) => {
+    try {
+        const total = await productModel.find({}).estimatedDocumentCount();
+        res.status(200).send({
+            success: true,
+            total
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "error in getting products",
+            error
+        });
+    }
+};
+
+export const productListController = async (req, res) => {
+    try {
+        const perPage = 8;
+        const page = req.params.page ? req.params.page : 1
+        const products = await productModel.find({}).skip((page - 1) * perPage).limit(perPage).sort({ createdAt: -1 });
+        res.status(200).send({
+            success: true,
+            products
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "faild to get product page list",
+            error
+        });
+    }
+};
+
+export const searchProductController = async (req, res) => {
     try {
         const { keyword } = req.params;
         const results = await productModel.find({
@@ -341,8 +342,6 @@ export const relatedProductController = async (req, res) => {
         });
     }
 };
-
-
 
 export const productsByCategoryController = async (req, res) => {
     try {
