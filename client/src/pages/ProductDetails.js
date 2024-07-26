@@ -12,7 +12,7 @@ const ProductDetails = () => {
     const [product, setProduct] = useState({});
     const [relatedProducts, setRelatedProducts] = useState([]);
     const navigate = useNavigate();
-    const backendUrl = "https://cloud-pharmacy-api.vercel.app";
+    const backendUrl = "https://cloud-pharma.vercel.app";
 
     const getProduct = async () => {
         try {

@@ -10,7 +10,7 @@ const CartPage = () => {
     const [cart, setCart] = useCart();
     const [auth] = useAuth();
     const navigate = useNavigate();
-    const backendUrl = "https://cloud-pharmacy-api.vercel.app";
+    const backendUrl = "https://cloud-pharma.vercel.app";
 
     const addToCart = (product) => {
         let newCart = [...cart];

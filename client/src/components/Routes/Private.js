@@ -7,7 +7,7 @@ import Spinner from "../Spinner";
 export default function PrivateRoutes() {
     const [Ok, setOK] = useState(false);
     const [auth, setAuth] = useAuth();
-    const backendUrl = "https://cloud-pharmacy-api.vercel.app";
+    const backendUrl = "https://cloud-pharma.vercel.app";
 
     useEffect(() => {
         const authCheck = async () => {

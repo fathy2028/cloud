@@ -13,7 +13,7 @@ const Profile = () => {
   const [address, setAddress] = useState("");
   const [answer, setAnswer] = useState("");
   const [auth, setAuth] = useAuth();
-  const backendUrl = "https://cloud-pharmacy-api.vercel.app";
+  const backendUrl = "https://cloud-pharma.vercel.app";
 
   useEffect(() => {
     const { name, email, phone, address } = auth?.user;

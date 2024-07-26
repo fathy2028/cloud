@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default function useCategory() {
     const [categories, setCategories] = useState([]);
-    const backendUrl = "https://cloud-pharmacy-api.vercel.app";
+    const backendUrl = "https://cloud-pharma.vercel.app";
 
     const getCategories = async () => {
         try {
