@@ -1,8 +1,8 @@
 import express from 'express';
+import cors from 'cors';
 import colors from 'colors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import conn from './config/db.js';
@@ -16,17 +16,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 dotenv.config();
-conn();
 
 // Middleware
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(cors({ origin: 'https://cloud-pharmacy.vercel.app' })); // Allow requests from your frontend
 
-// Static files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Configure CORS
+const corsOptions = {
+  origin: 'https://cloud-pharmacy.vercel.app', // frontend origin
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // allow cookies
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+
+conn();
 
 // Routes
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/v1/auth', authroutes);
 app.use('/api/v1/category', categoryroute);
 app.use('/api/v1/product', productroute);
@@ -34,11 +42,12 @@ app.use('/api/v1/order', orderroute);
 
 app.get('/', (req, res) => {
   res.send({
-    message: 'Welcome to cloud pharmacy',
+    message: 'Welcome to Cloud Pharmacy',
   });
 });
 
 const PORT = process.env.PORT || 8080;
+
 app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.DEV_MODE} mode on port ${PORT}`.green);
+  console.log(`Server running on ${process.env.DEV_MODE} mode on port ${PORT}`.green);
 });
