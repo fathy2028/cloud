@@ -3,7 +3,7 @@ import { isadmin, requiredsignin } from './../middlewares/authMiddleware.js';
 import { createProductController, deleteProductController, getallProductController, getProductController, productCountController, productFillterController, productListController, productsByCategoryController, relatedProductController, searchProductController, updateProductController } from "../controllers/productController.js";
 const router=express.Router();
 
-router.post("/create-product",requiredsignin,isadmin,createProductController)
+router.post("/create-product",requiredsignin,createProductController)
 
 router.get("/getall-products",getallProductController)
 
