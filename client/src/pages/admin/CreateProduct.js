@@ -19,9 +19,9 @@ const CreateProduct = () => {
   const [shipping, setShipping] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
-  const backendUrl = process.env.BACKEND_URL || "https://cloud-test-api.vercel.app"
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://cloud-test-api.vercel.app";
 
-  const getallCategories = async () => {
+  const getAllCategories = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/v1/category/getcategories`);
       if (data?.success) {
@@ -30,13 +30,13 @@ const CreateProduct = () => {
         toast.error("Failed to fetch categories");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Error while fetching categories");
     }
   };
 
   useEffect(() => {
-    getallCategories();
+    getAllCategories();
   }, []);
 
   const handlePhotoChange = (e) => {
@@ -67,6 +67,7 @@ const CreateProduct = () => {
 
       if (data?.success) {
         toast.success("Product created successfully");
+        // Reset form fields
         setName("");
         setDescription("");
         setPrice("");
@@ -77,10 +78,10 @@ const CreateProduct = () => {
         setPhotoPreview(null);
         navigate("/dashboard/admin/products");
       } else {
-        toast.error(data?.message);
+        toast.error(data?.message || "Failed to create product");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Error creating product");
     }
   };
@@ -96,14 +97,14 @@ const CreateProduct = () => {
             <h1>Product Management</h1>
             <form className='m-1 w-75' onSubmit={handleCreateProduct}>
               <Select
-                onChange={(value) => setCategory(value)}
+                onChange={setCategory}
                 bordered={false}
                 placeholder="Select Category"
                 size='large'
                 showSearch
                 className='form-select mb-3'
               >
-                {categories?.map(c => (
+                {categories.map(c => (
                   <Option key={c._id} value={c._id}>{c.name}</Option>
                 ))}
               </Select>
@@ -149,7 +150,7 @@ const CreateProduct = () => {
               <div className="mb-3">
                 <label className="form-label">Shipping</label>
                 <Select
-                  onChange={(value) => setShipping(value)}
+                  onChange={setShipping}
                   bordered={false}
                   placeholder="Select Shipping"
                   size='large'
