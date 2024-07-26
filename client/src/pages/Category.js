@@ -13,7 +13,7 @@ const Category = () => {
     const [loading, setLoading] = useState(false);
     const [cart, setCart] = useCart();
     const navigate = useNavigate();
-    const backendUrl = "https://cloud-api-phi.vercel.app";
+    const backendUrl = "https://cloud-pharmacy-api.vercel.app";
 
     const fetchProductsByCategory = async () => {
         try {

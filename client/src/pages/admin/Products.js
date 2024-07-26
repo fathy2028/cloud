@@ -15,7 +15,7 @@ const Products = () => {
   const fileInputRef = useRef(null);
   const [form] = Form.useForm();
   const [searchTerm, setSearchTerm] = useState("");
-  const backendUrl = "https://cloud-api-phi.vercel.app";
+  const backendUrl = "https://cloud-pharmacy-api.vercel.app";
 
   const getAllProducts = async () => {
     try {

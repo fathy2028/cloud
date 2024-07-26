@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const SearchInput = () => {
     const [values, setValues] = useSearch();
     const navigate = useNavigate();
-    const backendUrl = "https://cloud-api-phi.vercel.app";
+    const backendUrl = "https://cloud-pharmacy-api.vercel.app";
 
     const fetchAllProducts = async () => {
         try {

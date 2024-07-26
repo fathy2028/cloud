@@ -18,7 +18,7 @@ const Users = () => {
     password: '',
     answer: ''
   });
-  const backendUrl = "https://cloud-api-phi.vercel.app";
+  const backendUrl = "https://cloud-pharmacy-api.vercel.app";
 
   useEffect(() => {
     if (auth?.token) {
