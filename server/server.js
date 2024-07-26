@@ -23,11 +23,11 @@ app.use(morgan('dev'));
 
 // Configure CORS
 const corsOptions = {
-  origin: 'https://cloud-pharmacy.vercel.app', // frontend origin
+  origin: '*', // frontend origin
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, // allow cookies
   optionsSuccessStatus: 204,
-  allowedHeaders: 'Content-Type,Authorization',
+  allowedHeaders: 'Content-Type, X-Auth-Token, Origin, Authorization',
 };
 
 app.use(cors(corsOptions));
