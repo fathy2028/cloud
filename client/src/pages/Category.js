@@ -13,7 +13,7 @@ const Category = () => {
     const [loading, setLoading] = useState(false);
     const [cart, setCart] = useCart();
     const navigate = useNavigate();
-    const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app"
+    const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
 
     const fetchProductsByCategory = async () => {
         try {
@@ -50,14 +50,14 @@ const Category = () => {
                         {products.length > 0 ? (
                             products.map(product => (
                                 <div key={product._id} className='product-card'>
-                                    <img src={`/uploads/${product.photo}`} alt={product.name} className='product-image' />
+                                    <img src={`${backendUrl}/uploads/${product.photo}`} alt={product.name} className='product-image' />
                                     <div className='product-info'>
                                         <h3 className='product-name'>{product.name}</h3>
                                         <p className='product-description'>{product.description.substring(0, 40)}</p>
                                         <p className='product-price'><b>EGP</b>{product.price}</p>
                                     </div>
                                     <div className='product-buttons'>
-                                        <button className='btn btn-primary' onClick={() => { setCart([...cart, product]); toast.success("Item added to cart successfully"); localStorage.setItem("cart", JSON.stringify([...cart, product])) }}>Add to Cart</button>
+                                        <button className='btn btn-primary' onClick={() => { setCart([...cart, product]); toast.success("Item added to cart successfully"); localStorage.setItem("cart", JSON.stringify([...cart, product])); }}>Add to Cart</button>
                                         <button className='btn btn-secondary' onClick={() => navigate(`/product/${product._id}`)}>More Details</button>
                                     </div>
                                 </div>

@@ -12,7 +12,7 @@ const ProductDetails = () => {
     const [product, setProduct] = useState({});
     const [relatedProducts, setRelatedProducts] = useState([]);
     const navigate = useNavigate();
-    const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app"
+    const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
 
     const getProduct = async () => {
         try {
@@ -49,13 +49,7 @@ const ProductDetails = () => {
         <Mylayout title={"Product Details - Cloud Pharmacy"}>
             <div className='row container mt-2'>
                 <div className='col-md-6'>
-                    <img 
-                        style={{ objectFit: "cover" }} 
-                        height={"400px"} 
-                        width={"400px"} 
-                        src={`/uploads/${product.photo}`} 
-                        alt={product.name}  
-                    />
+                    <img style={{ objectFit:"cover" }} height={"400px"} width={"400px"} src={`${backendUrl}/uploads/${product.photo}`} alt={product.name}  />
                 </div>
                 <div className='col-md-6'>
                     <h1 className='text-center'>Product Details</h1>
@@ -63,17 +57,7 @@ const ProductDetails = () => {
                     <h5>Price: <b>EGP</b>{product.price}</h5>
                     <h5>Description: {product.description}</h5>
                     <h5>Category: {product.category?.name}</h5>
-                    <button 
-                        style={{ backgroundColor: "black" }} 
-                        className='btn btn-primary' 
-                        onClick={() => {
-                            setCart([...cart, product]);
-                            toast.success("Item added to cart successfully");
-                            localStorage.setItem("cart", JSON.stringify([...cart, product]));
-                        }}
-                    >
-                        Add to Cart
-                    </button>
+                    <button style={{ backgroundColor: "black" }} className='btn btn-primary' onClick={() => setCart([...cart, product])}>Add to Cart</button>
                 </div>
             </div>
             <div className='row'>
@@ -81,34 +65,19 @@ const ProductDetails = () => {
                 <div className='product-container'>
                     {relatedProducts.length > 0 ? relatedProducts.map(product => (
                         <div key={product._id} className='product-card'>
-                            <img 
-                                style={{ objectFit: "cover" }} 
-                                src={`/uploads/${product.photo}`} 
-                                alt={product.name} 
-                                className='product-image' 
-                            />
+                            <img style={{ objectFit:"cover" }} src={`${backendUrl}/uploads/${product.photo}`} alt={product.name} className='product-image' />
                             <div className='product-info'>
                                 <h3 className='product-name'>{product.name}</h3>
                                 <p className='product-description'>{product.description.substring(0, 40)}</p>
                                 <p className='product-price'><b>EGP</b>{product.price}</p>
                             </div>
                             <div className='product-buttons'>
-                                <button 
-                                    className='btn btn-primary' 
-                                    onClick={() => {
-                                        setCart([...cart, product]);
-                                        toast.success("Item added to cart successfully");
-                                        localStorage.setItem("cart", JSON.stringify([...cart, product]));
-                                    }}
-                                >
-                                    Add to Cart
-                                </button>
-                                <button 
-                                    className='btn btn-secondary' 
-                                    onClick={() => navigate(`/product/${product._id}`)}
-                                >
-                                    More Details
-                                </button>
+                                <button className='btn btn-primary' onClick={() => {
+                                    setCart([...cart, product]);
+                                    toast.success("Item added to cart successfully");
+                                    localStorage.setItem("cart", JSON.stringify([...cart, product]));
+                                }}>Add to Cart</button>
+                                <button className='btn btn-secondary' onClick={() => navigate(`/product/${product._id}`)}>More Details</button>
                             </div>
                         </div>
                     )) : <h5>No similar products found</h5>}

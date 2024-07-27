@@ -1,29 +1,45 @@
-import express from "express"
+import express from "express";
 import { isadmin, requiredsignin } from './../middlewares/authMiddleware.js';
-import { createProductController, deleteProductController, getallProductController, getProductController, productCountController, productFillterController, productListController, productsByCategoryController, relatedProductController, searchProductController, updateProductController } from "../controllers/productController.js";
-const router=express.Router();
+import { 
+  createProductController, 
+  deleteProductController, 
+  getallProductController, 
+  getProductController, 
+  productCountController, 
+  productFillterController, 
+  productListController, 
+  productsByCategoryController, 
+  relatedProductController, 
+  searchProductController, 
+  updateProductController,
+  uploadPhotoController // Import the new controller function
+} from "../controllers/productController.js";
 
-router.post("/create-product",requiredsignin,isadmin,createProductController)
+const router = express.Router();
 
-router.get("/getall-products",getallProductController)
+router.post("/create-product", requiredsignin, isadmin, createProductController);
 
-router.get("/get-product/:id",getProductController)
+router.get("/getall-products", getallProductController);
 
-router.put("/update-product/:id",requiredsignin,isadmin,updateProductController)
+router.get("/get-product/:id", getProductController);
+
+router.put("/update-product/:id", requiredsignin, isadmin, updateProductController);
 
 router.delete("/delete-product/:id", requiredsignin, isadmin, deleteProductController);
 
-router.post("/product-fillter",productFillterController);
+router.post("/product-fillter", productFillterController);
 
-router.get("/product-count",productCountController)
+router.get("/product-count", productCountController);
 
-router.get("/product-list/:page",productListController)
+router.get("/product-list/:page", productListController);
 
-router.get("/search/:keyword",searchProductController);
+router.get("/search/:keyword", searchProductController);
 
-router.get("/related-product/:pid/:cid",relatedProductController)
+router.get("/related-product/:pid/:cid", relatedProductController);
 
 router.get("/productsbycategory/:id", productsByCategoryController);
 
+// Add a new route for uploading photos
+router.post("/upload-photo", uploadPhotoController);
 
 export default router;

@@ -118,7 +118,7 @@ const AllOrders = () => {
                                             {order.products.map((product) => (
                                                 <div key={product._id} className="d-flex align-items-center me-2 mb-2">
                                                     <img
-                                                        src={`/uploads/${product.photo}`} // Use the uploads folder for the image source
+                                                        src={`${backendUrl}/uploads/${product.photo}`}
                                                         alt={product.name}
                                                         width="50"
                                                         height="50"

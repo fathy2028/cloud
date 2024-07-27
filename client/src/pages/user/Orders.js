@@ -80,13 +80,7 @@ const Orders = () => {
                     {order.products.map(product => (
                       <div key={product._id} className="row mb-2">
                         <div className="col-md-4">
-                          <img 
-                            src={`/uploads/${product.photo}`} // Use the uploads folder for the image source
-                            alt={product.name} 
-                            width="100" 
-                            height="100" 
-                            style={{ objectFit: 'cover' }} // Use 'cover' for better fit
-                          />
+                          <img src={`${backendUrl}/uploads/${product.photo}`} alt={product.name} width="100" height="100" style={{ objectFit: 'fill' }} />
                         </div>
                         <div className="col-md-8">
                           <h5>{product.name}</h5>

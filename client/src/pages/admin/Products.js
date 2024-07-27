@@ -3,8 +3,6 @@ import { Table, Button, Popconfirm, message, Modal, Form, Input, Select } from '
 import axios from 'axios';
 import Mylayout from '../../components/Layout/Mylayout';
 import AdminMenu from '../../components/Layout/AdminMenu';
-import path from 'path';
-import fs from 'fs';
 
 const { Option } = Select;
 
@@ -14,10 +12,12 @@ const Products = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [file, setFile] = useState(null);
+  const [photoFilename, setPhotoFilename] = useState('');
   const fileInputRef = useRef(null);
   const [form] = Form.useForm();
   const [searchTerm, setSearchTerm] = useState("");
-  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
+
+  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app"
 
   const getAllProducts = async () => {
     try {
@@ -68,37 +68,44 @@ const Products = () => {
       ...product,
       category: product.category._id,
     });
+    setPhotoFilename(product.photo);
     setIsModalVisible(true);
   };
 
-  const handleUpdate = async (values) => {
+  const uploadPhoto = async () => {
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("photo", file);
+    formData.append("filename", photoFilename);
+
     try {
-      const productData = {
-        ...values,
-        photo: editingProduct.photo, // Keep the existing photo name
-      };
-
-      if (file) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const photoName = uniqueSuffix + '-' + file.name;
-        const uploadsPath = path.join(__dirname, 'uploads', photoName);
-
-        // Save the photo to the uploads folder in the client
-        const reader = new FileReader();
-        reader.onload = () => {
-          fs.writeFileSync(uploadsPath, Buffer.from(new Uint8Array(reader.result)));
-        };
-        reader.readAsArrayBuffer(file);
-
-        productData.photo = photoName; // Update with new photo name
-      }
-
-      const { data } = await axios.put(`${backendUrl}/api/v1/product/update-product/${editingProduct._id}`, productData, {
+      const { data } = await axios.post(`${backendUrl}/upload-photo`, formData, {
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "multipart/form-data"
         }
       });
 
+      if (!data.success) {
+        message.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Error uploading photo");
+    }
+  };
+
+  const handleUpdate = async (values) => {
+    if (file) {
+      await uploadPhoto();  // Ensure the photo is uploaded before updating the product
+    }
+    
+    try {
+      const updateData = {
+        ...values,
+        photo: photoFilename,
+      };
+
+      const { data } = await axios.put(`${backendUrl}/api/v1/product/update-product/${editingProduct._id}`, updateData);
       if (data?.success) {
         message.success("Product updated successfully");
         getAllProducts();
@@ -120,6 +127,7 @@ const Products = () => {
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+    setPhotoFilename(e.target.files[0]?.name);
   };
 
   const handleSearch = async (e) => {
@@ -180,7 +188,7 @@ const Products = () => {
       title: 'Photo',
       dataIndex: 'photo',
       key: 'photo',
-      render: (photo) => <img src={`/uploads/${photo}`} alt={photo} width="50" height="50" />,
+      render: (photo) => <img src={`${backendUrl}/uploads/${photo}`} alt={photo} width="50" height="50" />,
     },
     {
       title: 'Actions',
@@ -298,12 +306,11 @@ const Products = () => {
               rules={[{ required: true, message: 'Please select shipping option' }]}
             >
               <Select>
-                <Option value={false}>No</Option>
                 <Option value={true}>Yes</Option>
+                <Option value={false}>No</Option>
               </Select>
             </Form.Item>
             <Form.Item
-              name="photo"
               label="Photo"
             >
               <input type="file" onChange={handleFileChange} ref={fileInputRef} />

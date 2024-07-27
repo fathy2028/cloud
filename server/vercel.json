@@ -8,6 +8,10 @@
   ],
   "routes": [
     {
+      "src": "/uploads/(.*)",
+      "dest": "/uploads/$1"
+    },
+    {
       "src": "/(.*)",
       "headers": {
         "Access-Control-Allow-Origin": "https://cloud-pharmacy.vercel.app",

@@ -5,8 +5,6 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Select } from 'antd';
-import fs from 'fs';
-import path from 'path';
 
 const { Option } = Select;
 
@@ -21,9 +19,10 @@ const CreateProduct = () => {
   const [shipping, setShipping] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
-  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
+  const [photoFilename, setPhotoFilename] = useState("");
+  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app"
 
-  const getAllCategories = async () => {
+  const getallCategories = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/v1/category/getcategories`);
       if (data?.success) {
@@ -32,13 +31,13 @@ const CreateProduct = () => {
         toast.error("Failed to fetch categories");
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast.error("Error while fetching categories");
     }
   };
 
   useEffect(() => {
-    getAllCategories();
+    getallCategories();
   }, []);
 
   const handlePhotoChange = (e) => {
@@ -46,62 +45,66 @@ const CreateProduct = () => {
     if (file) {
       setPhoto(file);
       setPhotoPreview(URL.createObjectURL(file));
+      const filename = file.name;
+      setPhotoFilename(filename);
+    }
+  };
+
+  const uploadPhoto = async () => {
+    if (!photo) return;
+    const formData = new FormData();
+    formData.append("photo", photo);
+    formData.append("filename", photoFilename);
+
+    try {
+      const { data } = await axios.post(`${backendUrl}/upload-photo`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
+
+      if (!data.success) {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error uploading photo");
     }
   };
 
   const handleCreateProduct = async (e) => {
     e.preventDefault();
+    await uploadPhoto();
+
     try {
-      if (photo) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const photoName = uniqueSuffix + '-' + photo.name;
-        const uploadsPath = path.join(__dirname, 'uploads', photoName);
+      const productData = {
+        name,
+        description,
+        price,
+        category,
+        quantity,
+        shipping,
+        photo: photoFilename,
+      };
 
-        // Save the photo to the uploads folder in the client
-        const reader = new FileReader();
-        reader.onload = () => {
-          fs.writeFileSync(uploadsPath, Buffer.from(new Uint8Array(reader.result)));
-        };
-        reader.readAsArrayBuffer(photo);
+      const { data } = await axios.post(`${backendUrl}/api/v1/product/create-product`, productData);
 
-        // Prepare the product data
-        const productData = {
-          name,
-          description,
-          price,
-          category,
-          quantity,
-          shipping,
-          photo: photoName // Send only the photo name
-        };
-
-        // Send the product data to the backend
-        const { data } = await axios.post(`${backendUrl}/api/v1/product/create-product`, productData, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        });
-
-        if (data?.success) {
-          toast.success("Product created successfully");
-          // Reset form fields
-          setName("");
-          setDescription("");
-          setPrice("");
-          setCategory("");
-          setQuantity("");
-          setShipping(false);
-          setPhoto(null);
-          setPhotoPreview(null);
-          navigate("/dashboard/admin/products");
-        } else {
-          toast.error(data?.message || "Failed to create product");
-        }
+      if (data?.success) {
+        toast.success("Product created successfully");
+        setName("");
+        setDescription("");
+        setPrice("");
+        setCategory("");
+        setQuantity("");
+        setShipping(false);
+        setPhoto(null);
+        setPhotoPreview(null);
+        navigate("/dashboard/admin/products");
       } else {
-        toast.error("Please select a photo");
+        toast.error(data?.message);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast.error("Error creating product");
     }
   };
@@ -117,14 +120,14 @@ const CreateProduct = () => {
             <h1>Product Management</h1>
             <form className='m-1 w-75' onSubmit={handleCreateProduct}>
               <Select
-                onChange={setCategory}
+                onChange={(value) => setCategory(value)}
                 bordered={false}
                 placeholder="Select Category"
                 size='large'
                 showSearch
                 className='form-select mb-3'
               >
-                {categories.map(c => (
+                {categories?.map(c => (
                   <Option key={c._id} value={c._id}>{c.name}</Option>
                 ))}
               </Select>
@@ -170,7 +173,7 @@ const CreateProduct = () => {
               <div className="mb-3">
                 <label className="form-label">Shipping</label>
                 <Select
-                  onChange={setShipping}
+                  onChange={(value) => setShipping(value)}
                   bordered={false}
                   placeholder="Select Shipping"
                   size='large'
