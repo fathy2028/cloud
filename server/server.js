@@ -23,16 +23,18 @@ app.use(morgan('dev'));
 
 // Configure CORS
 const corsOptions = {
-  origin: 'https://cloud-pharmacy.vercel.app', // Allow all origins
+  origin: 'https://cloud-pharmacy.vercel.app',
 };
 
 app.use(cors(corsOptions));
 
-// Ensure CORS middleware is applied before routes
+// Serve static files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Connect to the database
 conn();
 
 // Routes
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/v1/auth', authroutes);
 app.use('/api/v1/category', categoryroute);
 app.use('/api/v1/product', productroute);
