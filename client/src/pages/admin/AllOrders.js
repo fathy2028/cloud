@@ -9,7 +9,7 @@ const AllOrders = () => {
     const [orders, setOrders] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [auth] = useAuth();
-    const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app"
+    const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
 
     useEffect(() => {
         if (auth?.token) {
@@ -118,7 +118,7 @@ const AllOrders = () => {
                                             {order.products.map((product) => (
                                                 <div key={product._id} className="d-flex align-items-center me-2 mb-2">
                                                     <img
-                                                        src={`${backendUrl}/uploads/${product.photo}`} // Use the backend URL for the image source
+                                                        src={`/uploads/${product.photo}`} // Use the uploads folder for the image source
                                                         alt={product.name}
                                                         width="50"
                                                         height="50"

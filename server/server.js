@@ -3,8 +3,8 @@ import cors from 'cors';
 import colors from 'colors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import path from 'path';
 import { fileURLToPath } from 'url';
+import path from 'path';
 import conn from './config/db.js';
 import authroutes from './routes/authroute.js';
 import categoryroute from './routes/categoryroute.js';
@@ -27,9 +27,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-// Serve static files from the 'uploads' directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to the database
 conn();

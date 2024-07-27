@@ -1,87 +1,48 @@
 import productModel from "../models/productModel.js";
 import orderModel from "../models/orderModel.js";
 import slugify from "slugify";
-import multer from "multer";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-
-// Get the directory name of the current module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-let filename = "";
-const mystore = multer.diskStorage({
-  destination: (req, file, callback) => {
-    const uploadPath = path.join(__dirname, "../uploads");
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    callback(null, uploadPath);
-  },
-  filename: (req, file, callback) => {
-    let date = Date.now();
-    let fl = date + "." + file.mimetype.split("/")[1];
-    callback(null, fl);
-    filename = fl;
-  },
-});
-
-const upload = multer({ storage: mystore }).single("photo");
 
 // Create Product Controller
 export const createProductController = async (req, res) => {
-  upload(req, res, async (err) => {
-    if (err) {
-      return res.status(500).send({
-        success: false,
-        message: "Error uploading file",
-        error: err,
-      });
+  try {
+    const { name, description, price, category, quantity, shipping, photoFilename } = req.body;
+
+    if (!name) return res.status(400).send({ message: "Name is required" });
+    if (!description) return res.status(400).send({ message: "Description is required" });
+    if (!price) return res.status(400).send({ message: "Price is required" });
+    if (!category) return res.status(400).send({ message: "Category is required" });
+    if (!quantity) return res.status(400).send({ message: "Quantity is required" });
+    if (!shipping) return res.status(400).send({ message: "Shipping is required" });
+    if (!photoFilename) {
+      return res.status(400).send({ message: "Photo filename is required" });
     }
 
-    try {
-      const { name, description, price, category, quantity, shipping } = req.body;
-      const photo = req.file;
+    const product = new productModel({
+      name,
+      slug: slugify(name),
+      description,
+      price,
+      category,
+      quantity,
+      shipping,
+      photo: photoFilename, // Store the filename of the uploaded photo
+    });
 
-      if (!name) return res.status(400).send({ message: "Name is required" });
-      if (!description) return res.status(400).send({ message: "Description is required" });
-      if (!price) return res.status(400).send({ message: "Price is required" });
-      if (!category) return res.status(400).send({ message: "Category is required" });
-      if (!quantity) return res.status(400).send({ message: "Quantity is required" });
-      if (!shipping) return res.status(400).send({ message: "Shipping is required" });
-      if (!photo || photo.size > 1000000) {
-        return res.status(400).send({ message: "Photo is required and should be less than 1MB" });
-      }
+    await product.save();
 
-      const product = new productModel({
-        name,
-        slug: slugify(name),
-        description,
-        price,
-        category,
-        quantity,
-        shipping,
-        photo: filename, // Store the filename of the uploaded photo
-      });
-
-      await product.save();
-      filename = ""; // Reset filename after saving the product
-
-      res.status(201).send({
-        success: true,
-        message: "Product created successfully",
-        product,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({
-        success: false,
-        message: "Error in creating product",
-        error,
-      });
-    }
-  });
+    res.status(201).send({
+      success: true,
+      message: "Product created successfully",
+      product,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in creating product",
+      error,
+    });
+  }
 };
 
 // Get All Products Controller
@@ -108,7 +69,7 @@ export const getallProductController = async (req, res) => {
 export const getProductController = async (req, res) => {
   try {
     const id = req.params.id;
-    const product = await productModel.findById(id).populate("category", "name"); // populate category with only the name field
+    const product = await productModel.findById(id).populate("category", "name");
     if (!product) {
       return res.status(404).send({
         success: false,
@@ -132,59 +93,42 @@ export const getProductController = async (req, res) => {
 
 // Update Product Controller
 export const updateProductController = async (req, res) => {
-  upload(req, res, async (err) => {
-    if (err) {
-      return res.status(500).send({
+  try {
+    const id = req.params.id;
+    const { name, description, price, category, quantity, shipping, photoFilename } = req.body;
+
+    const updatedFields = { name, description, price, category, quantity, shipping };
+
+    if (name) {
+      updatedFields.slug = slugify(name);
+    }
+
+    if (photoFilename) {
+      updatedFields.photo = photoFilename; // Update the photo field if a new photo is uploaded
+    }
+
+    const updatedProduct = await productModel.findByIdAndUpdate(id, updatedFields, { new: true });
+
+    if (!updatedProduct) {
+      return res.status(404).send({
         success: false,
-        message: "Error uploading file",
-        error: err,
+        message: "Product not found",
       });
     }
 
-    try {
-      const id = req.params.id;
-      const { name, description, price, category, quantity, shipping } = req.body;
-      const photo = req.file;
-
-      const updatedFields = { name, description, price, category, quantity, shipping };
-
-      if (name) {
-        updatedFields.slug = slugify(name);
-      }
-
-      if (photo) {
-        updatedFields.photo = filename; // Update the photo field if a new photo is uploaded
-      }
-
-      const updatedProduct = await productModel.findByIdAndUpdate(
-        id,
-        updatedFields,
-        { new: true }
-      );
-
-      if (!updatedProduct) {
-        return res.status(404).send({
-          success: false,
-          message: "Product not found",
-        });
-      }
-
-      filename = ""; // Reset filename after updating the product
-
-      res.status(200).send({
-        success: true,
-        message: "Product updated successfully",
-        product: updatedProduct,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({
-        success: false,
-        message: "Error in updating product",
-        error,
-      });
-    }
-  });
+    res.status(200).send({
+      success: true,
+      message: "Product updated successfully",
+      product: updatedProduct,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in updating product",
+      error,
+    });
+  }
 };
 
 // Delete Product Controller
@@ -209,14 +153,7 @@ export const deleteProductController = async (req, res) => {
       });
     }
 
-    const photoPath = path.join(__dirname, "..", "uploads", product.photo);
-
     await productModel.findByIdAndDelete(id);
-
-    // Remove the photo file from the filesystem if it exists
-    if (fs.existsSync(photoPath)) {
-      fs.unlinkSync(photoPath);
-    }
 
     res.status(200).send({
       success: true,

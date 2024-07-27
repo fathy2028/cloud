@@ -3,6 +3,8 @@ import { Table, Button, Popconfirm, message, Modal, Form, Input, Select } from '
 import axios from 'axios';
 import Mylayout from '../../components/Layout/Mylayout';
 import AdminMenu from '../../components/Layout/AdminMenu';
+import path from 'path';
+import fs from 'fs';
 
 const { Option } = Select;
 
@@ -15,7 +17,7 @@ const Products = () => {
   const fileInputRef = useRef(null);
   const [form] = Form.useForm();
   const [searchTerm, setSearchTerm] = useState("");
-  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app"
+  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
 
   const getAllProducts = async () => {
     try {
@@ -71,19 +73,32 @@ const Products = () => {
 
   const handleUpdate = async (values) => {
     try {
-      const formData = new FormData();
-      Object.keys(values).forEach(key => {
-        formData.append(key, values[key]);
-      });
+      const productData = {
+        ...values,
+        photo: editingProduct.photo, // Keep the existing photo name
+      };
+
       if (file) {
-        formData.append('photo', file);
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const photoName = uniqueSuffix + '-' + file.name;
+        const uploadsPath = path.join(__dirname, 'uploads', photoName);
+
+        // Save the photo to the uploads folder in the client
+        const reader = new FileReader();
+        reader.onload = () => {
+          fs.writeFileSync(uploadsPath, Buffer.from(new Uint8Array(reader.result)));
+        };
+        reader.readAsArrayBuffer(file);
+
+        productData.photo = photoName; // Update with new photo name
       }
 
-      const { data } = await axios.put(`${backendUrl}/api/v1/product/update-product/${editingProduct._id}`, formData, {
+      const { data } = await axios.put(`${backendUrl}/api/v1/product/update-product/${editingProduct._id}`, productData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'application/json'
         }
       });
+
       if (data?.success) {
         message.success("Product updated successfully");
         getAllProducts();
@@ -165,7 +180,7 @@ const Products = () => {
       title: 'Photo',
       dataIndex: 'photo',
       key: 'photo',
-      render: (photo) => <img src={`${backendUrl}/uploads/${photo}`} alt={photo} width="50" height="50" />,
+      render: (photo) => <img src={`/uploads/${photo}`} alt={photo} width="50" height="50" />,
     },
     {
       title: 'Actions',
@@ -283,11 +298,12 @@ const Products = () => {
               rules={[{ required: true, message: 'Please select shipping option' }]}
             >
               <Select>
-                <Option value={true}>Yes</Option>
                 <Option value={false}>No</Option>
+                <Option value={true}>Yes</Option>
               </Select>
             </Form.Item>
             <Form.Item
+              name="photo"
               label="Photo"
             >
               <input type="file" onChange={handleFileChange} ref={fileInputRef} />

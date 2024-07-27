@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [auth] = useAuth();
-  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app"
+  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -81,7 +81,7 @@ const Orders = () => {
                       <div key={product._id} className="row mb-2">
                         <div className="col-md-4">
                           <img 
-                            src={`${backendUrl}/uploads/${product.photo}`} 
+                            src={`/uploads/${product.photo}`} // Use the uploads folder for the image source
                             alt={product.name} 
                             width="100" 
                             height="100" 

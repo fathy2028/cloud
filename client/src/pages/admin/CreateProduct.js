@@ -5,6 +5,8 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Select } from 'antd';
+import fs from 'fs';
+import path from 'path';
 
 const { Option } = Select;
 
@@ -19,7 +21,7 @@ const CreateProduct = () => {
   const [shipping, setShipping] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
-  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app"
+  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
 
   const getAllCategories = async () => {
     try {
@@ -50,35 +52,53 @@ const CreateProduct = () => {
   const handleCreateProduct = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("price", price);
-      formData.append("category", category);
-      formData.append("quantity", quantity);
-      formData.append("shipping", shipping);
-      formData.append("photo", photo);
+      if (photo) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const photoName = uniqueSuffix + '-' + photo.name;
+        const uploadsPath = path.join(__dirname, 'uploads', photoName);
 
-      const { data } = await axios.post(`${backendUrl}/api/v1/product/create-product`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
+        // Save the photo to the uploads folder in the client
+        const reader = new FileReader();
+        reader.onload = () => {
+          fs.writeFileSync(uploadsPath, Buffer.from(new Uint8Array(reader.result)));
+        };
+        reader.readAsArrayBuffer(photo);
+
+        // Prepare the product data
+        const productData = {
+          name,
+          description,
+          price,
+          category,
+          quantity,
+          shipping,
+          photo: photoName // Send only the photo name
+        };
+
+        // Send the product data to the backend
+        const { data } = await axios.post(`${backendUrl}/api/v1/product/create-product`, productData, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        if (data?.success) {
+          toast.success("Product created successfully");
+          // Reset form fields
+          setName("");
+          setDescription("");
+          setPrice("");
+          setCategory("");
+          setQuantity("");
+          setShipping(false);
+          setPhoto(null);
+          setPhotoPreview(null);
+          navigate("/dashboard/admin/products");
+        } else {
+          toast.error(data?.message || "Failed to create product");
         }
-      });
-
-      if (data?.success) {
-        toast.success("Product created successfully");
-        // Reset form fields
-        setName("");
-        setDescription("");
-        setPrice("");
-        setCategory("");
-        setQuantity("");
-        setShipping(false);
-        setPhoto(null);
-        setPhotoPreview(null);
-        navigate("/dashboard/admin/products");
       } else {
-        toast.error(data?.message || "Failed to create product");
+        toast.error("Please select a photo");
       }
     } catch (error) {
       console.error(error);

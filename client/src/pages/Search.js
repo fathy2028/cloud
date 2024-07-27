@@ -22,7 +22,7 @@ const Search = () => {
                             <div key={product._id} className='product-card'>
                                 <img 
                                     style={{ objectFit: "cover" }} 
-                                    src={`${backendUrl}/uploads/${product.photo}`} 
+                                    src={`/uploads/${product.photo}`} 
                                     alt={product.name} 
                                     className='product-image' 
                                 />

@@ -53,7 +53,7 @@ const ProductDetails = () => {
                         style={{ objectFit: "cover" }} 
                         height={"400px"} 
                         width={"400px"} 
-                        src={`${backendUrl}/uploads/${product.photo}`} 
+                        src={`/uploads/${product.photo}`} 
                         alt={product.name}  
                     />
                 </div>
@@ -83,7 +83,7 @@ const ProductDetails = () => {
                         <div key={product._id} className='product-card'>
                             <img 
                                 style={{ objectFit: "cover" }} 
-                                src={`${backendUrl}/uploads/${product.photo}`} 
+                                src={`/uploads/${product.photo}`} 
                                 alt={product.name} 
                                 className='product-image' 
                             />

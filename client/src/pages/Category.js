@@ -50,7 +50,7 @@ const Category = () => {
                         {products.length > 0 ? (
                             products.map(product => (
                                 <div key={product._id} className='product-card'>
-                                    <img src={`${backendUrl}/uploads/${product.photo}`} alt={product.name} className='product-image' />
+                                    <img src={`/uploads/${product.photo}`} alt={product.name} className='product-image' />
                                     <div className='product-info'>
                                         <h3 className='product-name'>{product.name}</h3>
                                         <p className='product-description'>{product.description.substring(0, 40)}</p>
