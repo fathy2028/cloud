@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js",
-     "postinstall": "npm install cors"
-
+    "postinstall": "npm install cors"
   },
   "keywords": [],
   "author": "fathy nassef",
@@ -20,6 +19,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-fileupload": "^1.5.1",
     "express-formidable": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1",
