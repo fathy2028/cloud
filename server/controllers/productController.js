@@ -4,12 +4,14 @@ import slugify from "slugify";
 import multer from "multer";
 import fs from "fs";
 import path from "path";
+import  express from "express"
 import { fileURLToPath } from "url";
 
 // Get the directory name of the current module
+const  app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Configure multer storage
 const mystore = multer.diskStorage({
     destination: (req, file, callback) => {
