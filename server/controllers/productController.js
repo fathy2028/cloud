@@ -7,14 +7,15 @@ import path from "path";
 import  express from "express"
 import { fileURLToPath } from "url";
 
-// Get the directory name of the current modu
+// Get the directory name of the current module
+const  app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Configure multer storage
 const mystore = multer.diskStorage({
     destination: (req, file, callback) => {
-        const uploadPath = path.join(__dirname, '../uploads');
+        const uploadPath = "./uploads";
         if (!fs.existsSync(uploadPath)) {
             fs.mkdirSync(uploadPath);
         }
