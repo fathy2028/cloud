@@ -15,7 +15,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Configure multer storage
 const mystore = multer.diskStorage({
     destination: (req, file, callback) => {
-        const uploadPath = "./uploads";
+        const uploadPath = "../uploads";
         if (!fs.existsSync(uploadPath)) {
             fs.mkdirSync(uploadPath);
         }
