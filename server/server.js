@@ -10,6 +10,7 @@ import authroutes from './routes/authroute.js';
 import categoryroute from './routes/categoryroute.js';
 import productroute from './routes/productroute.js';
 import orderroute from './routes/orderroute.js';
+import fileUpload from 'express-fileupload';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -27,6 +28,11 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+// Enable files upload
+app.use(fileUpload({
+  createParentPath: true
+}));
 
 // Connect to the database
 conn();
