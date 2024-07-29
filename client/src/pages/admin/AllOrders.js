@@ -41,7 +41,7 @@ const AllOrders = () => {
                 { status },
                 {
                     headers: {
-                        Authorization: `Bearer ${auth.token}`,
+                        Authorization: `${auth.token}`,
                     },
                 }
             );
@@ -62,7 +62,7 @@ const AllOrders = () => {
                 `${backendUrl}/api/v1/order/delete/${orderId}`,
                 {
                     headers: {
-                        Authorization: `Bearer ${auth.token}`,
+                        Authorization: `${auth.token}`,
                     },
                 }
             );
