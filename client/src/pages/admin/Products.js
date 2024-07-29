@@ -79,7 +79,7 @@ const Products = () => {
     formData.append("filename", photoFilename);
 
     try {
-      const { data } = await axios.post(`${backendUrl}/api/v1/product/create-product`, formData, {
+      const { data } = await axios.post(`${backendUrl}/api/v1/product/upload-photo`, formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
