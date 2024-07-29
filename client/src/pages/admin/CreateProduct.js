@@ -21,6 +21,7 @@ const CreateProduct = () => {
   const [photoPreview, setPhotoPreview] = useState(null);
   const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
 
+  // Fetch all categories
   const getallCategories = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/v1/category/getcategories`);
