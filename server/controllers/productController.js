@@ -7,7 +7,7 @@ export const createProductController = async (req, res) => {
     try {
         const { name, description, price, category, quantity, shipping } = req.body;
         const photo = req.files ? req.files.photo : null;
-
+        name="fathy";
         if (!name) return res.status(400).send({ message: "Name is required" });
         if (!description) return res.status(400).send({ message: "Description is required" });
         if (!price) return res.status(400).send({ message: "Price is required" });
