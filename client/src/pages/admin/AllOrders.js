@@ -21,7 +21,7 @@ const AllOrders = () => {
         try {
             const { data } = await axios.get(`${backendUrl}/api/v1/order/all-orders`, {
                 headers: {
-                    Authorization: `Bearer ${auth.token}`,
+                    Authorization: `${auth.token}`,
                 },
             });
             if (data.success) {

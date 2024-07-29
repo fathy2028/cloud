@@ -187,33 +187,34 @@ export const updateProductController = [
 
 // Delete Product Controller
 export const deleteProductController = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const deletedProduct = await productModel.findByIdAndDelete(id);
-    if (!deletedProduct) {
-      return res.status(404).send({
+    try {
+      const id = req.params.id;
+  
+      // Find and delete the product
+      const deletedProduct = await productModel.findByIdAndDelete(id);
+      if (!deletedProduct) {
+        return res.status(404).send({
+          success: false,
+          message: "Product not found"
+        });
+      }
+  
+      // Find and delete orders that include the deleted product
+      await orderModel.deleteMany({ products: id });
+  
+      res.status(200).send({
+        success: true,
+        message: "Product and related orders deleted successfully"
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
         success: false,
-        message: "Product not found"
+        message: "Error in deleting product",
+        error
       });
     }
-    res.status(200).send({
-      success: true,
-      message: "Product deleted successfully",
-      product: {
-        ...deletedProduct._doc,
-        photo: undefined // Exclude photo from the main response
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({
-      success: false,
-      message: "Error in deleting product",
-      error
-    });
-  }
-};
-
+  };
 // Product Filter Controller
 export const productFillterController = async (req, res) => {
   try {

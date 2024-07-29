@@ -87,6 +87,7 @@ const Products = () => {
       });
       if (data?.success) {
         message.success("Product updated successfully");
+        window.location.reload()
         getAllProducts();
         setIsModalVisible(false);
         setEditingProduct(null);
