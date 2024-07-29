@@ -12,12 +12,11 @@ const Products = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [file, setFile] = useState(null);
-  const [photoFilename, setPhotoFilename] = useState('');
   const fileInputRef = useRef(null);
   const [form] = Form.useForm();
   const [searchTerm, setSearchTerm] = useState("");
 
-  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app"
+  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
 
   const getAllProducts = async () => {
     try {
@@ -68,44 +67,24 @@ const Products = () => {
       ...product,
       category: product.category._id,
     });
-    setPhotoFilename(product.photo);
     setIsModalVisible(true);
   };
 
-  const uploadPhoto = async () => {
-    if (!file) return;
-    const formData = new FormData();
-    formData.append("photo", file);
-    formData.append("filename", photoFilename);
-
-    try {
-      const { data } = await axios.post(`${backendUrl}/api/v1/product/upload-photo`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      });
-
-      if (!data.success) {
-        message.error(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-      message.error("Error uploading photo");
-    }
-  };
-
   const handleUpdate = async (values) => {
+    const formData = new FormData();
+    Object.keys(values).forEach((key) => {
+      formData.append(key, values[key]);
+    });
     if (file) {
-      await uploadPhoto();  // Ensure the photo is uploaded before updating the product
+      formData.append("photo", file);
     }
-    
-    try {
-      const updateData = {
-        ...values,
-        photo: photoFilename,
-      };
 
-      const { data } = await axios.put(`${backendUrl}/api/v1/product/update-product/${editingProduct._id}`, updateData);
+    try {
+      const { data } = await axios.put(`${backendUrl}/api/v1/product/update-product/${editingProduct._id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       if (data?.success) {
         message.success("Product updated successfully");
         getAllProducts();
@@ -127,7 +106,6 @@ const Products = () => {
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
-    setPhotoFilename(e.target.files[0]?.name);
   };
 
   const handleSearch = async (e) => {
@@ -188,7 +166,14 @@ const Products = () => {
       title: 'Photo',
       dataIndex: 'photo',
       key: 'photo',
-      render: (photo) => <img src={`${backendUrl}/uploads/${photo}`} alt={photo} width="50" height="50" />,
+      render: (photo, record) => (
+        <img
+          src={`${backendUrl}/api/v1/product/get-product-photo/${record._id}`}
+          alt={record.name}
+          width="50"
+          height="50"
+        />
+      ),
     },
     {
       title: 'Actions',

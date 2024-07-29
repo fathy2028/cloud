@@ -5,14 +5,14 @@ import {
   deleteProductController, 
   getallProductController, 
   getProductController, 
+  getProductPhotoController, 
   productCountController, 
   productFillterController, 
   productListController, 
   productsByCategoryController, 
   relatedProductController, 
   searchProductController, 
-  updateProductController,
-  uploadPhotoController // Import the new controller function
+  updateProductController
 } from "../controllers/productController.js";
 
 const router = express.Router();
@@ -22,6 +22,8 @@ router.post("/create-product", requiredsignin, isadmin, createProductController)
 router.get("/getall-products", getallProductController);
 
 router.get("/get-product/:id", getProductController);
+
+router.get("/get-product-photo/:id", getProductPhotoController); // New endpoint
 
 router.put("/update-product/:id", requiredsignin, isadmin, updateProductController);
 
@@ -38,8 +40,5 @@ router.get("/search/:keyword", searchProductController);
 router.get("/related-product/:pid/:cid", relatedProductController);
 
 router.get("/productsbycategory/:id", productsByCategoryController);
-
-// Add a new route for uploading photos
-router.post("/upload-photo", uploadPhotoController);
 
 export default router;

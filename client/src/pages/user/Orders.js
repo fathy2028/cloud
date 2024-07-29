@@ -53,6 +53,11 @@ const Orders = () => {
     }
   };
 
+  // Function to get the URL for product photo
+  const getProductPhotoUrl = (productId) => {
+    return `${backendUrl}/api/v1/product/get-product-photo/${productId}`;
+  };
+
   return (
     <Mylayout title={"Dashboard - Orders"}>
       <div className='container-fluid m-3 p-3'>
@@ -80,7 +85,13 @@ const Orders = () => {
                     {order.products.map(product => (
                       <div key={product._id} className="row mb-2">
                         <div className="col-md-4">
-                          <img src={`${backendUrl}/uploads/${product.photo}`} alt={product.name} width="100" height="100" style={{ objectFit: 'fill' }} />
+                          <img 
+                            src={getProductPhotoUrl(product._id)} 
+                            alt={product.name} 
+                            width="100" 
+                            height="100" 
+                            style={{ objectFit: 'fill' }} 
+                          />
                         </div>
                         <div className="col-md-8">
                           <h5>{product.name}</h5>

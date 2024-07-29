@@ -21,7 +21,7 @@ const AllOrders = () => {
         try {
             const { data } = await axios.get(`${backendUrl}/api/v1/order/all-orders`, {
                 headers: {
-                    Authorization: `${auth.token}`,
+                    Authorization: `Bearer ${auth.token}`,
                 },
             });
             if (data.success) {
@@ -41,7 +41,7 @@ const AllOrders = () => {
                 { status },
                 {
                     headers: {
-                        Authorization: `${auth.token}`,
+                        Authorization: `Bearer ${auth.token}`,
                     },
                 }
             );
@@ -62,7 +62,7 @@ const AllOrders = () => {
                 `${backendUrl}/api/v1/order/delete/${orderId}`,
                 {
                     headers: {
-                        Authorization: `${auth.token}`,
+                        Authorization: `Bearer ${auth.token}`,
                     },
                 }
             );
@@ -84,6 +84,10 @@ const AllOrders = () => {
     const filteredOrders = orders.filter(order =>
         order.customer && order.customer.name && order.customer.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const getProductPhotoUrl = (productId) => {
+        return `${backendUrl}/api/v1/product/get-product-photo/${productId}`;
+    };
 
     return (
         <Mylayout title={"Dashboard - All Orders"}>
@@ -118,7 +122,7 @@ const AllOrders = () => {
                                             {order.products.map((product) => (
                                                 <div key={product._id} className="d-flex align-items-center me-2 mb-2">
                                                     <img
-                                                        src={`${backendUrl}/uploads/${product.photo}`}
+                                                        src={getProductPhotoUrl(product._id)}
                                                         alt={product.name}
                                                         width="50"
                                                         height="50"

@@ -19,8 +19,7 @@ const CreateProduct = () => {
   const [shipping, setShipping] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
-  const [photoFilename, setPhotoFilename] = useState("");
-  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app"
+  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
 
   const getallCategories = async () => {
     try {
@@ -45,49 +44,28 @@ const CreateProduct = () => {
     if (file) {
       setPhoto(file);
       setPhotoPreview(URL.createObjectURL(file));
-      const filename = file.name;
-      setPhotoFilename(filename);
-    }
-  };
-
-  const uploadPhoto = async () => {
-    if (!photo) return;
-    const formData = new FormData();
-    formData.append("photo", photo);
-    formData.append("filename", photoFilename);
-
-    try {
-      const { data } = await axios.post(`${backendUrl}/api/v1/product/upload-photo`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      });
-
-      if (!data.success) {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Error uploading photo");
     }
   };
 
   const handleCreateProduct = async (e) => {
     e.preventDefault();
-    await uploadPhoto();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("category", category);
+    formData.append("quantity", quantity);
+    formData.append("shipping", shipping);
+    if (photo) {
+      formData.append("photo", photo);
+    }
 
     try {
-      const productData = {
-        name,
-        description,
-        price,
-        category,
-        quantity,
-        shipping,
-        photo: photoFilename,
-      };
-
-      const { data } = await axios.post(`${backendUrl}/api/v1/product/create-product`, productData);
+      const { data } = await axios.post(`${backendUrl}/api/v1/product/create-product`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
 
       if (data?.success) {
         toast.success("Product created successfully");

@@ -31,9 +31,6 @@ app.use(cors(corsOptions));
 // Connect to the database
 conn();
 
-// Serve the uploads folder statically
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 // Routes
 app.use('/api/v1/auth', authroutes);
 app.use('/api/v1/category', categoryroute);
