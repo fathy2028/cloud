@@ -66,8 +66,7 @@ export const getallProductController = async (req, res) => {
       numproducts: products.length,
       message: "Products fetched successfully",
       products: products.map(product => ({
-        ...product._doc,
-        photo: undefined // Exclude photo from the main response
+        ...product._doc// Exclude photo from the main response
       }))
     });
   } catch (error) {
