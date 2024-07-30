@@ -30,7 +30,10 @@ export const createProductController = [
         category,
         quantity,
         shipping,
-        photo: req.file.filename
+        photo: {
+          data: photo.buffer,
+          contentType: photo.mimetype,
+        }
       });
 
       await product.save();
