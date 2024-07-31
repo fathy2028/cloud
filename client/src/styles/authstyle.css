@@ -1,11 +1,72 @@
-.form-control{
-    min-width: 700px;
-    min-height: 35px;
+/* Base styles for larger screens */
+.form-control {
+  width: 100%;
+  min-width: 300px;
+  min-height: 35px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  padding: 10px;
+  box-sizing: border-box;
 }
-.form-control,
-.btn-primary {
-  font-size: 0.875rem;
+
+.btn-dark {
+  font-size: 1rem;
   justify-content: center;
-  border-right: 5px;
-  width: 200px;
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 300px;
+  margin-top: 10px;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .form-control {
+      min-width: 600px;
+  }
+  .btn-dark {
+      max-width: 250px;
+  }
+}
+
+@media (max-width: 992px) {
+  .form-control {
+      min-width: 500px;
+  }
+  .btn-dark {
+      max-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-control {
+      min-width: 400px;
+  }
+  .btn-dark {
+      max-width: 180px;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-control {
+      min-width: 100%;
+      font-size: 0.875rem;
+      padding: 8px;
+  }
+  .btn-dark {
+      max-width: 100%;
+      font-size: 0.875rem;
+      padding: 8px;
+  }
+}
+
+/* Additional small screen adjustments */
+@media (max-width: 375px) {
+  .form-control {
+      font-size: 0.75rem;
+      padding: 6px;
+  }
+  .btn-dark {
+      font-size: 0.75rem;
+      padding: 6px;
+  }
 }
