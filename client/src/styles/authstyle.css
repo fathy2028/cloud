@@ -1,4 +1,10 @@
 /* Base styles for larger screens */
+.register{
+  max-height: 600px;
+}
+.login{
+  max-height: 600px;
+}
 .form-control {
   width: 100%;
   min-width: 300px;
