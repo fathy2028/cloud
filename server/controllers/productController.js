@@ -41,10 +41,7 @@ export const createProductController = [
       res.status(201).send({
         success: true,
         message: "Product created successfully",
-        product: {
-          ...product._doc,
-          photo: undefined // Exclude photo from the main response
-        }
+        product
       });
     } catch (error) {
       console.log(error);
@@ -65,11 +62,8 @@ export const getallProductController = async (req, res) => {
       success: true,
       numproducts: products.length,
       message: "Products fetched successfully",
-      products: products.map(product => ({
-        ...product._doc// Exclude photo from the main response
-      }))
-    });
-  } catch (error) {
+      products
+  })} catch (error) {
     console.log(error);
     res.status(500).send({
       success: false,
@@ -93,10 +87,7 @@ export const getProductController = async (req, res) => {
     res.status(200).send({
       success: true,
       message: "Product fetched successfully",
-      product: {
-        ...product._doc,
-        photo: undefined // Exclude photo from the main response
-      }
+      product
     });
   } catch (error) {
     console.log(error);
@@ -169,10 +160,7 @@ export const updateProductController = [
       res.status(200).send({
         success: true,
         message: "Product updated successfully",
-        product: {
-          ...updatedProduct._doc,
-          photo: undefined // Exclude photo from the main response
-        }
+        product
       });
     } catch (error) {
       console.log(error);
