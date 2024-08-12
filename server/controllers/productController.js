@@ -221,7 +221,7 @@ export const productFillterController = async (req, res) => {
       if (radio.length) {
         args.price = { $gte: radio[0], $lte: radio[1] }; // Set price range filter
       }
-      const products = await productModel.find(args);
+      const products = await productModel.find(args).select('-photo');
       res.status(200).send({
         success: true,
         products
@@ -239,7 +239,7 @@ export const productFillterController = async (req, res) => {
 // Product Count Controller
 export const productCountController=async(req,res)=>{
     try {
-        const total=await productModel.find({}).estimatedDocumentCount();
+        const total=await productModel.find({}).select('-photo').estimatedDocumentCount();
         res.status(200).send({
             success:true,
             total
@@ -259,7 +259,7 @@ export const productListController= async(req,res)=>{
     try {
         const perPage=8;
         const page=req.params.page ? req.params.page : 1
-        const products=await productModel.find({}).skip((page-1)*perPage).limit(perPage).sort({createdAt:-1});
+        const products=await productModel.find({}).select('-photo').skip((page-1)*perPage).limit(perPage).sort({createdAt:-1});
         res.status(200).send({
             success:true,
             products
@@ -283,7 +283,7 @@ export const searchProductController = async (req, res) => {
                 { name: { $regex: keyword, $options: "i" } },
                 { description: { $regex: keyword, $options: "i" } }
             ]
-        }).populate("category");
+        }).select('-photo').populate("category");
         res.json(results);
     } catch (error) {
         console.log(error);
@@ -302,7 +302,7 @@ export const relatedProductController = async (req, res) => {
         const products = await productModel.find({
             category: cid,
             _id: { $ne: pid } // Exclude the current product
-        }).limit(4).populate("category");
+        }).select('-photo').limit(8).populate("category");
 
         if (products) {
             res.status(200).send({
@@ -330,7 +330,7 @@ export const relatedProductController = async (req, res) => {
 export const productsByCategoryController = async (req, res) => {
     try {
         const { id } = req.params; // Get category ID from params
-        const products = await productModel.find({ category: id }).populate("category");
+        const products = await productModel.find({ category: id }).select('-photo').populate("category");
         if (!products) {
             return res.status(404).send({
                 success: false,
