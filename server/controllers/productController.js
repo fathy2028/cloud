@@ -160,21 +160,21 @@ export const updateProductController = [
       if (!updatedProduct) {
         return res.status(404).send({
           success: false,
-          message: "Product not found"
+          message: "Product not found",
         });
       }
 
       res.status(200).send({
         success: true,
         message: "Product updated successfully",
-        product
+        product: updatedProduct,
       });
     } catch (error) {
       console.log(error);
       res.status(500).send({
         success: false,
         message: "Error in updating product",
-        error
+        error,
       });
     }
   }
