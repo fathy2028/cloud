@@ -19,10 +19,10 @@ const AuthProvider=({children})=>{
                 user:parseData.user,
                 token:parseData.token
             });
-            axios.defaults.headers.common["Authorization"]=auth?.token
         }
         //eslint-disable-next-line
     },[])
+    axios.defaults.headers.common["Authorization"]=auth?.token
     return (<AuthContext.Provider value={[auth,setAuth]}>
     {children}
     </AuthContext.Provider>
