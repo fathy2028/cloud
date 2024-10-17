@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [auth] = useAuth();
-  const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
+   const backendUrl = process.env.BACKEND_URL || "https://queen-pharmacy-api.vercel.app"
 
   useEffect(() => {
     const fetchOrders = async () => {

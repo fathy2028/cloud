@@ -12,8 +12,7 @@ const ProductDetails = () => {
     const [product, setProduct] = useState({});
     const [relatedProducts, setRelatedProducts] = useState([]);
     const navigate = useNavigate();
-    const backendUrl = process.env.BACKEND_URL || "https://cloud-pharmacy-api.vercel.app";
-
+    const backendUrl = process.env.BACKEND_URL || "https://queen-pharmacy-api.vercel.app";
     const getProduct = async () => {
         try {
             const { data } = await axios.get(`${backendUrl}/api/v1/product/get-product/${params.id}`);
