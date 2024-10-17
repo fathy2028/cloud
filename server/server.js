@@ -23,7 +23,7 @@ app.use(morgan('dev'));
 
 // Configure CORS
 const corsOptions = {
-  origin: 'https://cloud-pharmacy.vercel.app',
+  origin: 'https://queen-pharmacy.vercel.app',
 };
 
 app.use(cors(corsOptions));
