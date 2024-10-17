@@ -4,7 +4,7 @@ import policy from "../images/policy.jpeg";
 
 const PolicyPage = () => {
   return (
-    <Layout title={"Policy - Cloud Pharmacy"}>
+    <Layout title={"Policy - Queen Pharmacy"}>
       <div className="row contactus">
         <div className="col-md-6">
           <img

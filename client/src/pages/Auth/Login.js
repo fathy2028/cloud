@@ -37,7 +37,7 @@ const Login = () => {
   }
 
   return (
-    <Mylayout title={"Login - Cloud Pharmacy"}>
+    <Mylayout title={"Login - Queen Pharmacy"}>
       <div className='login'>
         <h2>Login Now</h2>
         <form onSubmit={handleSubmit}>

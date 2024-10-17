@@ -91,7 +91,7 @@ const CartPage = () => {
     };
 
     return (
-        <Mylayout>
+        <Mylayout title={"About us - Queen Pharmacy"}>
             <div className='container'>
                 <div className='row'>
                     <div className='col-md-12'>

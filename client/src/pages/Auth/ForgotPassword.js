@@ -29,7 +29,7 @@ const ForgotPassword = () => {
   }
 
   return (
-    <Mylayout title={"ForgotPassword - Cloud Pharmacy"}>
+    <Mylayout title={"ForgotPassword - Queen Pharmacy"}>
       <>
         <div className='login'>
           <h2>Forgot Password</h2>

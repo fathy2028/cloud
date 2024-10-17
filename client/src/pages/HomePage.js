@@ -152,7 +152,7 @@ const HomePage = () => {
   };
 
   return (
-    <Mylayout title={"Home - Cloud Pharmacy"}>
+    <Mylayout title={"Home - Queen Pharmacy"}>
       <div className='container'>
         <div className='slider-container'>
           <Slider {...sliderSettings}>

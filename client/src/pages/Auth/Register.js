@@ -32,7 +32,7 @@ const Register = () => {
   }
 
   return (
-    <Mylayout title={"Register - Cloud Pharmacy"}>
+    <Mylayout title={"Register - Queen Pharmacy"}>
       <div className='register'>
         <h2>Register Now</h2>
         <form onSubmit={handleSubmit}>
