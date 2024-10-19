@@ -194,7 +194,7 @@ const HomePage = () => {
               {products.length > 0 ? products.map(product => (
                 <div key={product._id} className='product-card'>
                   <img 
-                    style={{ objectFit: "cover",  height: "250px" }}
+                    style={{ objectFit: "cover",  height: "300px" }}
                     src={getProductPhotoUrl(product._id)} 
                     alt={product.name} 
                     className='product-image' 
